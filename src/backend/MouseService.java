@@ -14,6 +14,7 @@ public class MouseService{
 	private MouseService(){}
 
 	public static void clickRelative(int x, int y, int w, int h){
+		//System.out.println(x + " " + y + " " + w + " " + h);
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		int width = gd.getDisplayMode().getWidth();
 		int height = gd.getDisplayMode().getHeight();
@@ -26,6 +27,17 @@ public class MouseService{
 			bot.delay(50);
 			bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
 			System.out.println("Clicked (" + x + ", " + y + ")");
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+
+	public static void shiftMouse(int x, int y){
+		try{
+			Robot bot = new Robot();
+			int mouseX = (int)MouseInfo.getPointerInfo().getLocation().getX();
+			int mouseY = (int)MouseInfo.getPointerInfo().getLocation().getY();
+			bot.mouseMove(mouseX + x, mouseY + y);
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}

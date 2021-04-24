@@ -83,6 +83,29 @@ public class KeyPressService{
 						robot.keyRelease(KeyEvent.VK_END);
 						break;
 					}
+					case "LCLICK":{
+						robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+    					robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+						break;
+					}
+					case "RCLICK":{
+						robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+    					robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
+						break;
+					}
+					case "MCLICK":{
+						robot.mousePress(InputEvent.BUTTON2_DOWN_MASK);
+    					robot.mouseRelease(InputEvent.BUTTON2_DOWN_MASK);
+						break;
+					}
+					case "WHEEL UP":{
+						robot.mouseWheel(-1);
+						break;
+					}
+					case "WHEEL DOWN":{
+						robot.mouseWheel(1);
+						break;
+					}
 				}
 			}
 		}catch(Exception ex){

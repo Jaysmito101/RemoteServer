@@ -88,6 +88,25 @@ app.post("/post", (req, res) => {
             });
         }
         http.request(options, callback).end(); 
+    }else if(req.body.sdf4hgfgfsgsgdg4 == "dsg4dfsdf45f4ds5f4d5fdd5fd45sf4d4f"){
+        const x =  req.body.s41gd5f4g5d4g54f;
+        const y =  req.body.sfds45ds45d4d4sd;
+        var options = {
+            host: ip.address(),
+            port: 8080,
+            path: "/mousemove/" + encodeURI(x) + "/" + encodeURI(y) 
+        };
+        
+        callback = function(response) {
+            var str = '';
+            response.on('data', function (chunk) {
+                str += chunk;
+            });
+            response.on('end', function () {
+                res.send(str);
+            });
+        }
+        http.request(options, callback).end(); 
     }
 });
 

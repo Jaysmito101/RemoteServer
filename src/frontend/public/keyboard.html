@@ -44,12 +44,15 @@
         <div id="container2"></div>
         <br><br>
         <div id="container3"></div>
+        <br><br>
+        <div id="container4"></div>
     </center>
     
     <script>
         const container1 = document.getElementById("container1");
         const container2 = document.getElementById("container2");
         const container3 = document.getElementById("container3");
+        const container4 = document.getElementById("container4");
 
         for(var i=65;i<91;i++){
             var button = document.createElement('button');
@@ -139,6 +142,39 @@
             });
             }
             container3.appendChild(button);
+        }
+
+        const keys = ["Enter", "Up", "Down", "Left", "Right", "Backspace"];
+
+        for(var i=0;i<keys.length;i++){
+            var ele = keys[i];
+            var button = document.createElement('button');
+            button.innerText = ele;
+            button.setAttribute("target", ele.toUpperCase());
+            button.onclick = (ev) => {
+                fetch('/post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    sdf4sdf64fds8df4: "dsg4df94gf94g9df4gd9f4g9dg9fdg8fff",
+                    ssd4f69s4fd4f6sd: "d4f68g48fd4gd68gf847g6d4fg8f4g84f6",
+                    a64f6s4df45gf4df: "df46g8df47g64g6f4dg6847gf84fd6g468",
+                    sd4f6sd4f8f4dd4f: ev.srcElement.getAttribute("target"),
+                    s4f6ds54f56ds4f5: "d4g6f8f47g5f4g5f4g64f6g4g54f5d68rr"
+                })
+            }).then((res) => {
+                if(res.status == 200){
+                    var resText = res.text().then((responseText) => {
+                        if(JSON.parse(responseText).status != 200){
+                            alert("Error in sending Key Press " + String.fromCharCode(i));
+                        }
+                    });
+                }
+            });
+            }
+            container4.appendChild(button);
         }
 
         var array = document.getElementsByTagName("button")

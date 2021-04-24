@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remote Server</title>
+    <script src="https://yoannmoinet.github.io/nipplejs/javascripts/nipplejs.js"></script>
+    <style>
+        body {
+            background-color: rgba(10, 11, 22, 0.883);
+        }
+
+        h1 {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-size: 100px;
+            padding: 20px;
+            color: beige;
+        }
+
+        button {
+            padding: 10px;
+            margin: 10px;
+            font-family: Arial, Helvetica, sans-serif;
+            transition: 0.5s;
+            text-decoration: none;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 20px;
+            color: wheat;
+
+            height: 50px;
+            outline: none;
+        }
+
+        .button-super {
+            padding: 30px;
+            margin: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 60px;
+            color: wheat;
+            transition: 0.5s;
+            text-decoration: none;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 60px;
+            color: wheat;
+            height: auto;
+            width: auto;
+        }
+
+        button:hover {
+            transform: scale(1.2);
+        }
+
+        button:active {
+            transform: scale(0.8);
+        }
+
+        img {
+            border: 2px solid black;
+            width: 70%;
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+        <u>
+            <h1>Remote Server</h1>
+        </u>
+        <br><br>
+        <button id="capture" class="button-super">Start</button>
+        <br><br>
+        <img id="captured" width="70%">
+        <br><br>
+        <div id="container5"></div>
+        <div id="zone_joystick" style="position: fixed;left: 85%;top: 90%;">
+        </div>
+        <div id="zone_joystick2" style="position: fixed;right: 85%;top: 90%;">
+        </div>
+        <br>
+        <u>
+            <h1 style="height: 35px;">Keyboard</h1>
+        </u>
+        <br><br>
+        <div id="container4"></div>
+        <br><br>
+        <div id="container3"></div>
+        <br><br>
+        <div id="container1"></div>
+        <br><br>
+        <br><br>
+    </center>
+
+    <div class="joystick-base" touch-action="none">
+        <div class="joystick-shaft" touch-action="none"></div>
+    </div>
+    <script>
+        var isRec = false;
+        var array = document.getElementsByTagName("button");
+        var captured = document.getElementById("captured");
+
+        for (var i = 0; i < array.length; i++) {
+            array[i].style.backgroundColor = "rgba(" + random(0, 255) + ", " + random(0, 255) + ", " + random(0, 255) + ", 0.4)";
+        }
+
+        function random(lo, hi) {
+            return (parseInt(Math.random() * (hi - lo + 1)) + lo);
+        }
+
+        document.getElementById("capture").onclick = toggleState;
+
+        document.body.oncontextmenu = (ev) => {
+            ev.preventDefault();
+        };
+
+        function toggleState() {
+            if (isRec) {
+                document.getElementById("capture").innerText = "Start";
+                isRec = false;
+            } else {
+                document.getElementById("capture").innerText = "Stop";
+                isRec = true;
+            }
+        }
+
+        setInterval(() => {
+            if (!isRec)
+                return;
+            fetch('/post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    sd4f64sd4fs654ds: "sf46fsd4sd544sfs485dsf4f6d48sfd64s",
+                    sd4fdddd4fs654ds: "jbadiu1f654s65dfd4ds54d5f4f5ysgbds",
+                    sd4gjgsd4fs654ds: "f4dsf4ds6fg4dgfffsfdgd4fd456gf45g4",
+                    sd4f64ssdfgf54ds: "sad44as65d4s56a465456ad4s5f45sd4ff",
+                    sd4f64ghfghh54ds: "dnjasf4ds5f4d5g4f584hgsddg5f4h5gf8"
+                })
+            }).then((res) => {
+                if (res.status == 200) {
+                    var resText = res.text().then((responseText) => {
+                        document.getElementById("captured").src = "data:image/png;base64," + (JSON.parse(responseText).base64);
+
+                    });
+                }
+            });
+        }, 200);
+
+        var timeout;
+        var lastTap = 0;
+
+        captured.addEventListener('touchend', function (event) {
+            var currentTime = new Date().getTime();
+            var tapLength = currentTime - lastTap;
+            clearTimeout(timeout);
+            if (tapLength < 500 && tapLength > 0) {
+                var x = (event.changedTouches[0].clientX - captured.offsetLeft);
+                var y = (event.changedTouches[0].clientY - captured.offsetTop);
+                sendToServer(x, y);
+                event.preventDefault();
+            } else {
+                timeout = setTimeout(function () {
+                    clearTimeout(timeout);
+                }, 500);
+            }
+            lastTap = currentTime;
+        });
+
+        function sendToServer(x, y) {
+            if (!isRec)
+                return;
+            fetch('/post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    sd4f64hjsfs654ds: "sds54fdsdf1fdssddfgdsfd15ds4f5d64s",
+                    sd4fdddd4fdsfasf: "jbasdagdfs1df5fdjsbfjhdsvfgghfvhfs",
+                    sd4gassdggf654ds: captured.height,
+                    sd4fndfjunjdaskb: "sad441asd51ds5mufhybyjtvdff45sd4ff",
+                    sd4f6fbkfdgsyhfg: captured.width,
+                    sd4fnadbhsdjsakb: "sad44asd1f3asd1d1d51d5sf1ds55sd4ff",
+                    sd4f6fbkf4sd5f4g: y,
+                    sd4fndf1dsa51fd6: "sad44as65sdfjuyhsdfs1f541ff45sd4ff",
+                    sd4f6f15sad1yhfg: x
+                })
+            }).then((res) => {
+                if (res.status == 200) {
+                    var resText = res.text().then((responseText) => {
+
+                    });
+                }
+            });
+        }
+
+        const container1 = document.getElementById("container1");
+        const container3 = document.getElementById("container3");
+        const container4 = document.getElementById("container4");
+        const container5 = document.getElementById("container5");
+
+        for (var i = 65; i < 91; i++) {
+            var button = document.createElement('button');
+            button.innerText = String.fromCharCode(i);
+            button.setAttribute("target", String.fromCharCode(i));
+            button.onclick = (ev) => {
+                fetch('/post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sdf4sdf64fds8df4: "dsg4df94gf94g9df4gd9f4g9dg9fdg8fff",
+                        ssd4f69s4fd4f6sd: "d4f68g48fd4gd68gf847g6d4fg8f4g84f6",
+                        a64f6s4df45gf4df: "df46g8df47g64g6f4dg6847gf84fd6g468",
+                        sd4f6sd4f8f4dd4f: ev.srcElement.getAttribute("target"),
+                        s4f6ds54f56ds4f5: "d4g6f8f47g5f4g5f4g64f6g4g54f5d68rr"
+                    })
+                }).then((res) => {
+                    if (res.status == 200) {
+                        var resText = res.text().then((responseText) => {
+                            if (JSON.parse(responseText).status != 200) {
+                                alert("Error in sending Key Press " + String.fromCharCode(i));
+                            }
+                        });
+                    }
+                });
+            }
+            container1.appendChild(button);
+        }
+
+
+        for (var i = 48; i < 58; i++) {
+            var button = document.createElement('button');
+            button.innerText = String.fromCharCode(i);
+            button.setAttribute("target", String.fromCharCode(i));
+            button.onclick = (ev) => {
+                fetch('/post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sdf4sdf64fds8df4: "dsg4df94gf94g9df4gd9f4g9dg9fdg8fff",
+                        ssd4f69s4fd4f6sd: "d4f68g48fd4gd68gf847g6d4fg8f4g84f6",
+                        a64f6s4df45gf4df: "df46g8df47g64g6f4dg6847gf84fd6g468",
+                        sd4f6sd4f8f4dd4f: ev.srcElement.getAttribute("target"),
+                        s4f6ds54f56ds4f5: "d4g6f8f47g5f4g5f4g64f6g4g54f5d68rr"
+                    })
+                }).then((res) => {
+                    if (res.status == 200) {
+                        var resText = res.text().then((responseText) => {
+                            if (JSON.parse(responseText).status != 200) {
+                                alert("Error in sending Key Press " + String.fromCharCode(i));
+                            }
+                        });
+                    }
+                });
+            }
+            container3.appendChild(button);
+        }
+
+        const keys = ["Enter", "Up", "Down", "Left", "Right", "Backspace"];
+
+        for (var i = 0; i < keys.length; i++) {
+            var ele = keys[i];
+            var button = document.createElement('button');
+            button.innerText = ele;
+            button.setAttribute("target", ele.toUpperCase());
+            button.onclick = (ev) => {
+                fetch('/post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sdf4sdf64fds8df4: "dsg4df94gf94g9df4gd9f4g9dg9fdg8fff",
+                        ssd4f69s4fd4f6sd: "d4f68g48fd4gd68gf847g6d4fg8f4g84f6",
+                        a64f6s4df45gf4df: "df46g8df47g64g6f4dg6847gf84fd6g468",
+                        sd4f6sd4f8f4dd4f: ev.srcElement.getAttribute("target"),
+                        s4f6ds54f56ds4f5: "d4g6f8f47g5f4g5f4g64f6g4g54f5d68rr"
+                    })
+                }).then((res) => {
+                    if (res.status == 200) {
+                        var resText = res.text().then((responseText) => {
+                            if (JSON.parse(responseText).status != 200) {
+                                alert("Error in sending Key Press " + String.fromCharCode(i));
+                            }
+                        });
+                    }
+                });
+            }
+            container4.appendChild(button);
+        }
+
+        const mkeys = ["LClick", "MClick", "RClick", "Wheel Up", "Wheel Down"];
+
+        for (var i = 0; i < mkeys.length; i++) {
+            var ele = mkeys[i];
+            var button = document.createElement('button');
+            button.innerText = ele;
+            button.setAttribute("target", ele.toUpperCase());
+            button.onclick = (ev) => {
+                fetch('/post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sdf4sdf64fds8df4: "dsg4df94gf94g9df4gd9f4g9dg9fdg8fff",
+                        ssd4f69s4fd4f6sd: "d4f68g48fd4gd68gf847g6d4fg8f4g84f6",
+                        a64f6s4df45gf4df: "df46g8df47g64g6f4dg6847gf84fd6g468",
+                        sd4f6sd4f8f4dd4f: ev.srcElement.getAttribute("target"),
+                        s4f6ds54f56ds4f5: "d4g6f8f47g5f4g5f4g64f6g4g54f5d68rr"
+                    })
+                }).then((res) => {
+                    if (res.status == 200) {
+                        var resText = res.text().then((responseText) => {
+                            if (JSON.parse(responseText).status != 200) {
+                                alert("Error in sending Key Press " + String.fromCharCode(i));
+                            }
+                        });
+                    }
+                });
+            }
+            container5.appendChild(button);
+        }
+
+        var array = document.getElementsByTagName("button")
+        for (var i = 0; i < array.length; i++) {
+            array[i].style.backgroundColor = "rgba(" + random(0, 255) + ", " + random(0, 255) + ", " + random(0, 255) + ", 0.4)";
+        }
+
+        function random(lo, hi) {
+            return (parseInt(Math.random() * (hi - lo + 1)) + lo);
+        }
+
+        var radius = 100;
+
+        var sampleJoystick = {
+            zone: document.getElementById('zone_joystick'),
+            mode: 'static',
+            position: {
+                left: '85%',
+                top: '90%'
+            },
+            size: radius * 2,
+            color: 'white'
+        };
+
+        var joystick;
+        var position;
+        joystick = nipplejs.create(sampleJoystick);
+        joystick.on('start end', function (evt, data) {
+            position = data;
+        }).on('move', function (evt, data) {
+            position = data;
+        }).on('move',
+            function (evt, data) {
+                var x = data.direction.x;
+                var y = data.direction.y;
+                if(data.angle.degree < 30 || data.angle.degree > 315){
+                    y = "nan";
+                }else if (Math.abs(data.angle.degree - 180) < 30){
+                    y = "nan";
+                }
+                if(data.angle.degree < 180 ){
+                    if(Math.abs(data.angle.degree - 90) < 30){
+                        x = "nan";
+                    }
+                }else{
+                    if(Math.abs(data.angle.degree - 270) < 30){
+                        x = "nan";
+                    }
+                }
+                fetch('/post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sdf4hgfgfsgsgdg4: "dsg4dfsdf45f4ds5f4d5fdd5fd45sf4d4f",
+                        ssdsdfhfghfhgfgd: "d4f68g4fg45d4g5f4f564f46f4d8fg84f6",
+                        a64sdg16h516h1df: "df46g8sdgd4f6548gf5d4g4f5ff4d6g468",
+                        s41gd5f4g5d4g54f: x,
+                        s4fsfd4f64sf56sd: "dSF45fds6546d4f654d65465fdsdf5d68r",
+                        sfds45ds45d4d4sd: y
+                    })
+                }).then((res) => {
+                    if (res.status == 200) {
+                        var resText = res.text().then((responseText) => {
+                            if (JSON.parse(responseText).status != 200) {
+                                alert("Error in moving mouse.");
+                            }
+                        });
+                    }
+                });
+            }
+        ).on('pressure', function (evt, data) {
+            position = data;
+        });
+
+
+
+
+        var sampleJoystick2 = {
+            zone: document.getElementById('zone_joystick2'),
+            mode: 'static',
+            position: {
+                right: '85%',
+                top: '90%'
+            },
+            size: radius * 2,
+            color: 'white'
+        };
+
+        var joystick2;
+        var position2;
+        joystick2 = nipplejs.create(sampleJoystick2);
+        joystick2.on('start end', function (evt, data) {
+            position2 = data;
+        }).on('move', function (evt, data) {
+            position2 = data;
+        }).on('move',
+            function (evt, data) {
+                var y = data.direction.y;
+                var command = "";
+                if(y == "up"){
+                    command = "Wheel Up";
+                }else{
+                    command = "Wheel Down";
+                }
+                fetch('/post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sdf4sdf64fds8df4: "dsg4df94gf94g9df4gd9f4g9dg9fdg8fff",
+                        ssd4f69s4fd4f6sd: "d4f68g48fd4gd68gf847g6d4fg8f4g84f6",
+                        a64f6s4df45gf4df: "df46g8df47g64g6f4dg6847gf84fd6g468",
+                        sd4f6sd4f8f4dd4f: command,
+                        s4f6ds54f56ds4f5: "d4g6f8f47g5f4g5f4g64f6g4g54f5d68rr"
+                    })
+                }).then((res) => {
+                    if (res.status == 200) {
+                        var resText = res.text().then((responseText) => {
+                            if (JSON.parse(responseText).status != 200) {
+                                alert("Error in Scrolling.");
+                            }
+                        });
+                    }
+                });
+                
+            }
+        ).on('pressure', function (evt, data) {
+            position2 = data;
+        });
+    </script>
+</body>
+
+</html>

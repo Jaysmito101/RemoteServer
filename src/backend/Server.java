@@ -26,6 +26,7 @@ public class Server implements Runnable{
 			server.createContext("/screenshot", new ScreenShotHandler());
 			server.createContext("/command", new CommandHandler());
 			server.createContext("/mouseclick", new MouseClickHandler());
+			server.createContext("/mousemove", new MouseMoveHandler());
 			server.setExecutor(null);
 			server.start();
 			System.out.println("RemoteServer backend started at PORT : " + port);

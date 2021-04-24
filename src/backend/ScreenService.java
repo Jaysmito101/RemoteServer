@@ -18,7 +18,13 @@ public class ScreenService{
 			Robot r = new Robot();
 			Rectangle capture = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
 			BufferedImage image = r.createScreenCapture(capture);
-			return imgToBase64String(image, "png");
+			int mouseX = (int)MouseInfo.getPointerInfo().getLocation().getX();
+       		int mouseY = (int)MouseInfo.getPointerInfo().getLocation().getY();
+			Graphics2D g = (Graphics2D) image.getGraphics();
+			Color red = new Color(255, 0, 0, 160);
+    		g.setColor(red);
+    		g.fillOval(mouseX - 10, mouseY - 10, 20, 20);
+			return imgToBase64String(image, "gif");
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
