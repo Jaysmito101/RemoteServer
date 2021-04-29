@@ -7,6 +7,5 @@ sudo java RemoteServer &
 cd ..
 cd frontend
 sudo node server.js &
-sleep 1
-echo "Servers started!"
+sleep 5
 read -r -p "Press any key to exit and shutdown servers ..."
