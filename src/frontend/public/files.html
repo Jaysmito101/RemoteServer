@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RemoteServer</title>
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            user-select: none;
+            transition: .2s all;
+        }
+        
+        body {
+            padding-top: 77px;
+        }
+        
+        /* header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            padding: 20px;
+            background-color: #2196F3;
+            color: white;
+        }
+        header h1 {
+            float: left;
+            font-size: 20px;
+            font-weight: 400;
+        }
+        header .material-icons {
+            float: right;
+            cursor: pointer;
+        }
+        header .icon-menu {
+            float: left;
+            margin-right: 20px;
+        } */
+        
+        main {
+            margin-top: 50px;
+            padding: 20px 50px;
+        }
+        
+        .folder * {
+            width: 100px;
+        }
+        .folder {
+            float: left;
+            width: 100px;
+            height: 152px;
+            padding: 20px;
+            margin-right: 50px;
+            margin-bottom: 70px;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        
+        .folder:hover h1 {
+            
+        }
+        .folder:hover p.cooltip {
+            opacity: 0;
+            top: 0;
+        }
+        
+        .folder * {
+            text-align: center;
+        }
+        
+        .folder i {
+            margin: 0;
+            font-size: 100px;
+            color: #607D8B;
+        }
+        
+        .folder h1 {
+            position: relative;
+            display: block;
+            top: -37px;
+            font-size: 15px;
+            font-weight: 400;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        
+        .folder p.cooltip {
+            position: relative;
+            top: 5px;
+            left: -50%;
+            margin-left: 35px;
+            background: #212121;
+            font-size: 15px;
+            color: white;
+            border-radius: 4px;
+            padding: 10px 20px;
+            padding-right: 30px;
+            width: 300px;
+            text-overflow: ellipsis;
+            opacity: 0;
+            z-index: 10000;
+        }
+        .folder p.cooltip:before {
+            content: '';
+            position: absolute;
+            display: block;
+            top: -4px;
+            left: 50%;
+            margin-left: -5px;
+            height: 10px;
+            border-radius: 2px;
+            background-color: #212121;
+            transform: rotate(45deg);
+            z-index: 10000;
+        }
+        div.properties {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 10;
+            width: 300px;
+            background-color: white;
+        }
+        div.properties:before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 300px;
+            bottom: 0;
+            background-color: #212121;
+            opacity: .5;
+        }
+        div.properties img {
+            position: relative;
+            top: -1px;
+            left: -1px;
+            width: 110%;
+            height: 200px;
+            filter: blur(2px);
+        }
+        div.properties h1 {
+            position: relative;
+            width: 100%;
+            text-align: left;
+            margin-left: 20px;
+            color: white;
+        }
+        
+        header {
+            z-index: 1000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background-color: #2196F3;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+        
+        header h1 {
+            font-weight: 400;
+        }
+        
+        header span {
+            flex: 1;
+        }
+        
+        header i {
+            margin: 0 10px;
+            cursor: pointer;
+        }
+        
+        header i:nth-child(1) {
+            margin: 0 20px;
+        }
+        
+        @font-face {
+        }
+        
+        .material-icons {
+            font-family: 'Material Icons';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;  /* Preferred icon size */
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+            
+            /* Support for all WebKit browsers. */
+            -webkit-font-smoothing: antialiased;
+            /* Support for Safari and Chrome. */
+            text-rendering: optimizeLegibility;
+            
+            /* Support for Firefox. */
+            -moz-osx-font-smoothing: grayscale;
+            
+            /* Support for IE. */
+            font-feature-settings: 'liga';
+        }
+        
+        #path{
+            position: fixed;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background-color: #2196F3;
+            color: white;
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            z-index: 1000;
+        }
+        
+        body {
+            --light: hsl(220, 50%, 90%);
+            --primary: hsl(255, 30%, 55%);
+            --focus: hsl(210, 90%, 50%);
+            --border-color: hsla(0, 0%, 100%, .2);
+            --global-background: hsl(220, 25%, 10%);
+            --background: linear-gradient(to right, hsl(210, 30%, 20%), hsl(255, 30%, 25%));
+            --shadow-1: hsla(236, 50%, 50%, .3);
+            --shadow-2: hsla(236, 50%, 50%, .4);
+            
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Open Sans', sans-serif;
+            color: var(--light);
+            background: var(--global-background);
+        }
+        
+        
+        .close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 35px;
+            height: 30px;
+            background: #000;
+            color: #fff;
+            cursor: pointer;
+            border: 0;
+        }
+        .mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(52, 73, 94, 0.8);
+            z-index: 50;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.7s;
+        }
+        .modal {
+            position: fixed;
+            top: 60%;
+            left: 50%;
+            width: 400px;
+            height: 300px;
+            margin-left: -200px;
+            margin-top: -150px;
+            background: #bdc3c7;
+            z-index: 100;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.5s ease-out;
+            transform: translateY(45px);
+        }
+        .active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .active + .modal {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .show {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150px;
+            height: 40px;
+            margin-top: -20px;
+            margin-left: -75px;
+            background: #e74c3c;
+            color: #fff;
+            border-radius: 5px;
+            border: 0;
+            border-bottom: 2px solid #c0392b;
+            cursor: pointer;
+        }
+        .show:hover {
+            background: #c0392b;
+        }
+        .show:active {
+            transform: scale(0.9);
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        
+        <h1>Remote Server</h1>
+        <span></span>
+        <i id= "cpat" class="material-icons-outlined">
+            Set Path
+        </i>
+        <i id= "rf" class="material-icons-outlined">
+            Refresh
+        </i>
+        <i id= "rf-updt" class="material-icons-outlined">
+            Update Refresh Rate
+        </i>
+    </header>
+    <div id="path">
+        <h6>/home/user</h6>
+    </div>
+    <main id="container">
+        
+    </main>
+    <div class="mask" role="dialog"></div>
+    <div class="modal" role="alert">
+        <button class="close" role="button">X</button>
+        <button class = "show" onclick="downloadFile()">Download</button>
+    </div>
+    <script src="jquery.js"></script>
+    <script>
+        var path = "";
+        var selectedFile = "";
+        var seperator = "/"; //DEFAULT IS LINUX
+        var preVpath = "";
+        var prevDir = "";
+        var fs = {};
+        var delay = 10000;
+        setup();
+        var container;        
+        function refreshView(){
+            if(delay < 2000)
+            delay=2000;
+            var dir = fs.dirs;
+            container.innerHTML = `
+            <div class="folder"  onclick="setPath(-1)">
+                <img src="./folder.svg" class="material-icons">
+                <p class="cooltip">Back</p>
+            </img>
+            <h1>...</h1>
+        </div>
+        `;
+        for(var i=0;dir!=undefined && i<dir.length;i++){
+            container.innerHTML += `
+            <div class="folder" onclick="setPath(${i})">
+                <img src="./folder.svg" class="material-icons">
+                <p class="cooltip">${path + seperator + dir[i]}</p>
+            </img>
+            <h1>${dir[i]}</h1>
+        </div>`;
+    }
+    var file = fs.files;
+    for(var i=0;file!=undefined && i<file.length;i++){
+        container.innerHTML += `
+        <div class="folder" onclick="handleFile(${i})">
+            <img src="./file.svg" class="material-icons">
+            <p class="cooltip">${path + seperator + file[i]}</p>
+        </img>
+        <h1>${file[i]}</h1>
+    </div>`;
+}
+}
+
+function handleFile(index){
+    $(".mask").addClass("active");
+    selectedFile = path + seperator + fs.files[index];
+}
+
+function setPath(index){
+    if(index == -1){
+        path = preVpath;
+        preVpath = "/";
+        fetchView();
+        return;
+    }else{
+        if(fs.dirs[index] == prevDir)
+        return;
+        preVpath = path;
+        path = path + seperator + fs.dirs[index];
+        prevDir = fs.dirs[index];
+    }
+    fetchView();
+}
+
+function downloadFile(){
+    if(selectedFile != ""){
+        fetch('/post', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            requestDownload: "true",
+            dpath: (selectedFile)
+        })
+    }).then((res) => {
+        if(res.status == 200){
+            var resText = res.text().then((responseText) => {
+                try{
+                    window.open(responseText, "_blank");
+                }catch{}
+            });
+        }
+    });
+    }
+}
+
+function fetchView(){
+    fetch('/post', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            pathdetails: "true",
+            dpath: path
+        })
+    }).then((res) => {
+        if(res.status == 200){
+            var resText = res.text().then((responseText) => {
+                try{
+                    fs= JSON.parse(atob((JSON.parse(responseText).data)));
+                }catch{}
+                refreshView();
+            });
+        }
+    });
+}
+
+
+
+function setup(){
+    fetch('/post', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            defpath: "true"
+        })
+    }).then((res) => {
+        if(res.status == 200){
+            var resText = res.text().then((responseText) => {
+                preVpath = path;
+                path = atob(JSON.parse(responseText).data);
+                fetchView();
+            });
+        }
+    });
+    document.getElementById("cpat").onclick = ()=>{
+        path = (prompt("Enter new path : (May cause errors if wrong)"))
+    }
+    document.getElementById("rf-updt").onclick = ()=>{
+        delay = parseInt(prompt("Enter refresh delay in seconds :"))*1000;
+    }
+    document.getElementById("rf").onclick = ()=>{
+        fetchView();
+    }
+    container = document.getElementById("container");
+    setInterval(()=>{
+        fetchView();
+    }, delay);
+    setInterval(()=>{
+        document.getElementById("path").innerText = path;
+    }, 200);
+}
+
+
+
+function closeModal(){
+    selectedFile = "";
+    $(".mask").removeClass("active");
+}
+
+
+$(".close, .mask").on("click", function(){
+    closeModal();
+});
+
+$(document).keyup(function(e) {
+    if (e.keyCode == 27) {
+        closeModal();
+    }
+});
+</script>
+</body>
+</html>

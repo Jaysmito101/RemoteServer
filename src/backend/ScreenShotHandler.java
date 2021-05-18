@@ -17,16 +17,25 @@ public class ScreenShotHandler implements HttpHandler {
 		String authBody = (new String(he.getRequestBody().readAllBytes()));
 		if(AuthService.isAuthentic(authBody)){
 			String[] parts = requestURI.split("/");
-			if(parts.length!=1){
+			if(parts.length!=2){
 				String response = "{\"status\":404, \"msg\":\"Command not recognized\"}";
 				he.sendResponseHeaders(404, response.length());
 				he.getResponseBody().write(response.getBytes(Charset.defaultCharset()));
 			}else{
-				String base64 = ScreenService.captureSnapshot();
+				float quality = 0.5f;
+				try{
+					quality = Float.parseFloat( java.net.URLDecoder.decode(parts[1], StandardCharsets.UTF_8.name()) );
+				}catch(Exception ex){
+					ex.printStackTrace();
+				}
+				String base64 = ScreenService.captureSnapshot(quality, false);
 				if(base64!=null){
+					
 					String response = "{\"status\":200, \"msg\":\"Success\", \"base64\":\"" + base64 + "\"}";
 					he.sendResponseHeaders(200, response.length());
-					he.getResponseBody().write(response.getBytes(Charset.defaultCharset()));
+					PrintStream ps = new PrintStream(he.getResponseBody());
+					ps.print(response);
+					ps.flush();
 				}else{
 					String response = "{\"status\":500, \"msg\":\"Failed to capture screenshot\"}";
 					he.sendResponseHeaders(500, response.length());

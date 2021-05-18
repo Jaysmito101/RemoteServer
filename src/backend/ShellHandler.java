@@ -63,7 +63,7 @@ public class ShellHandler implements HttpHandler {
 						@Override
 						public void run(){
 							try{
-							Process process = new ProcessBuilder(("cmd" + " " + command).strip().trim().split(" ")).redirectErrorStream(true).start();
+							Process process = new ProcessBuilder((command).strip().trim().split(" ")).redirectErrorStream(true).start();
             				String output = "";
             				BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			            	String line = null;

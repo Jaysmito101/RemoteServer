@@ -15,7 +15,7 @@
             padding: 20px;
             color: beige;
         }
-        button{
+        #capture{
             padding: 30px;
             margin: 20px;
             font-family: Arial, Helvetica, sans-serif;
@@ -27,15 +27,70 @@
             font-size: 60px;
             color: wheat;
         }
-        button:hover{
+        #capture:hover{
             transform: scale(1.2);
         }
-        button:active{
+        #capture:active{
             transform: scale(0.8);
         }
         img{
             border: 2px solid black; 
             width: 70%;
+        }
+        
+        
+        
+        .slider {
+            margin-top: 60px;
+            -webkit-appearance: none;
+            width: 50%;
+            height: 15px;
+            background: #000;
+            outline: none;
+            border: 5px solid lawngreen;
+            border-radius: 8px;
+        }
+        
+        
+        /* for chrome/safari */
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 60px;
+            background: #000;
+            cursor: pointer;
+            border: 5px solid lawngreen;
+            border-radius: 4px;
+        }
+        
+        /* for firefox */
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 60px;
+            
+            background: #000;
+            cursor: pointer;
+            border: 5px solid lawngreen;
+            border-radius: 4px;
+        }
+        b{
+            color: #fff;
+            margin-bottom: 60px;
+            font-family: helvetica;
+            font-size: 25px;
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+        
+        span{
+            color: #fff;
+            font-family: helvetica;
+            font-size: 25px;
+            font-style: italic;
+            letter-spacing: 2px;
+            padding : 10px;
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -46,9 +101,18 @@
         <button id = "capture">Start</button>
         <br><br>
         <img src="" id ="captured" alt="Start">
+        <br><br>
+        <br><br>
+        <br><br>
+        <b>Video Quality(Higher Quality => Lower Frame Rate)</b>
+        <br>
+        <span>Poor</span>
+        <input type="range" min="1" max="1000" value="500" class="slider" id="quality">
+        <span>Great</span>
     </center>
-    
+    <script src="./jquery.js"></script>
     <script>
+        var quality = 500;
         var isRec = false;
         var array = document.getElementsByTagName("button")
         for(var i = 0; i < array.length ; i++ ){
@@ -58,9 +122,9 @@
         function random(lo, hi){
             return (parseInt(Math.random() * (hi - lo + 1)) + lo);
         }
-
+        
         document.getElementById("capture").onclick = toggleState;
-
+        
         function toggleState(){
             if(isRec){
                 document.getElementById("capture").innerText = "Start";
@@ -73,7 +137,7 @@
         
         setInterval(()=>{
             if(!isRec)
-                return;
+            return;
             fetch('/post', {
                 method: 'POST',
                 headers: {
@@ -83,6 +147,7 @@
                     sd4f64sd4fs654ds: "sf46fsd4sd544sfs485dsf4f6d48sfd64s",
                     sd4fdddd4fs654ds: "jbadiu1f654s65dfd4ds54d5f4f5ysgbds",
                     sd4gjgsd4fs654ds: "f4dsf4ds6fg4dgfffsfdgd4fd456gf45g4",
+                    sdgsfsdg654646ds: quality,
                     sd4f64ssdfgf54ds: "sad44as65d4s56a465456ad4s5f45sd4ff",
                     sd4f64ghfghh54ds: "dnjasf4ds5f4d5g4f584hgsddg5f4h5gf8"
                 })
@@ -93,7 +158,12 @@
                     });
                 }
             });
-        }, 200)
+        }, 200);
+        
+        document.getElementById("quality").onchange = () =>{
+            quality = document.getElementById("quality").value;
+        }
+        
     </script>
 </body>
 </html>

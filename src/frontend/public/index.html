@@ -49,25 +49,74 @@
     <center>
         <u><h1>Remote Server</h1></u>
         <br><br>
-        <ul>
-            <a href="/dashboard.html"><li>Dashboard</li></a>
-            <a href="/shell.html"><li>Shell</li></a>
-            <a href="/vidstream.html"><li>Screen Video</li></a>
-            <a href="/keyboard.html"><li>Keyboard</li></a>
-            <a href="/mouse.html"><li>Mouse</li></a>
-            <a href="/screenshot.html"><li>Screenshot</li></a>
-            <a href="/commandboard.html"><li>Command Board</li></a>
+        <ul id = "list">
         </ul>
     </center>
-
+    
     <script>
-        var array = document.getElementsByTagName("li")
-        for(var i = 0; i < array.length ; i++ ){
-            array[i].style.backgroundColor = "rgba(" + random(0, 255) + ", " + random(0, 255) + ", " + random(0, 255) + ", 0.4)";
+        const items = [
+        {
+            href : "/dashboard.html",
+            text : "Dashboard",
+            data : undefined
+        },
+        {
+            href : "/shell.html",
+            text : "Shell",
+            data : undefined
+        },
+        {
+            href : "/vidstream.html",
+            text : "Screen Video",
+            data : undefined
+        },
+        {
+            href : "/keyboard.html",
+            text : "Keyboard",
+            data : undefined
+        },
+        {
+            href : "/mouse.html",
+            text : "Mouse",
+            data : undefined
+        },
+        {
+            href : "/screenshot.html",
+            text : "Screenshot",
+            data : undefined
+        },
+        {
+            href : "/commandboard.html",
+            text : "Command Board",
+            data : undefined
+        },
+        {
+            href : "/files.html",
+            text : "File Manager",
+            data : undefined
         }
-
+        ];
+        
         function random(lo, hi){
             return (parseInt(Math.random() * (hi - lo + 1)) + lo);
+        }
+        shuffle(items);
+        var lst = document.getElementById("list");
+        for(var i=0;i<items.length;i++){
+            lst.innerHTML += `<a href="${items[i].href}"><li style="background-color:rgba(${random(0, 255) },${random(0, 255)}, ${random(0, 255)}, 0.4);">${items[i].text}</li></a>`;
+        }
+
+        function shuffle(array) {
+            var currentIndex = array.length, temporaryValue, randomIndex;
+            while (0 !== currentIndex) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex -= 1;
+                temporaryValue = array[currentIndex];
+                array[currentIndex] = array[randomIndex];
+                array[randomIndex] = temporaryValue;
+            }
+            
+            return array;
         }
     </script>
 </body>
