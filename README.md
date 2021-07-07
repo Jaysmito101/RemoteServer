@@ -2,6 +2,9 @@
 A  system with Java Backend and NodeJS Frontend to remotely control a computer!
 
 
+|VERSION 5 IS HIGLY BUGGED DUE TO SOME DEBUG ISSUES PLEASE USE VERSION 4|
+|-|
+
 ## How to Start Servers
 
 On Linux : 
